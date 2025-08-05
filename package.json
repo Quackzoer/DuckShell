@@ -1,0 +1,28 @@
+{
+  "name": "cli_command_manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx index.ts",
+    "db:migrate": "prisma migrate dev --name <name>"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.0",
+    "@prisma/client": "6.13.0",
+    "commander": "^14.0.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.9.1",
+    "@types/node": "^24.1.0",
+    "prisma": "^6.13.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id   Int     @id @default(autoincrement())
+  name String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  groupId Int?
+  group Group? @relation("GroupToGroup", fields: [groupId], references: [id])
+  subGroups Group[] @relation("GroupToGroup")
+  commands Command[]
+}
+
+model Command {
+  id      Int    @id @default(autoincrement())
+  command String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  groupId Int?
+  group   Group? @relation(fields: [groupId], references: [id])
+  flags    Flag[]
+  subCommands Command[] @relation("CommandToCommand")
+  parentCommand Command? @relation("CommandToCommand", fields: [parentCommandId], references: [id])
+  parentCommandId Int?
+  arguments Argument[]
+}
+
+model Flag {
+  id Int @id @default(autoincrement())
+  short String?
+  full String
+  required Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  commandId Int
+  command Command @relation(fields: [commandId], references: [id])
+  argumentId Int?
+  arguments Argument[]
+}
+
+model Argument {
+  id Int @id @default(autoincrement())
+  name String
+  required Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  flags Flag[]
+  commandId Int?
+  command Command? @relation(fields: [commandId], references: [id])
+}
